@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.hero{
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    /* text-transform: uppercase; */
+    font-size: calc(1.275rem + 1.5vw);
+    line-height: 2rem;
+}
+.shadow{
+    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1);
+}
+.border_{
+    border-top: 1px solid #ffffff20;
+}
+.font{
+   font-family: "Poppins", sans-serif; 
+}
+.line_h{
+    line-height: 1.5
+}
+/* .srv:hover{
+    box-shadow: 2px 10px 1px rgba(0, 0, 0, 0.1);
+} */
+.srv:hover .srv_con{
+    border: 2.4px solid transparent;
+    background: #71AB30;
+    color: white;
+}
+
+.bg_img{
+    width: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), #00000080), url('../public/assets/carousel-1.jpg'), no-repeat center center;
+    background-size: cover;
+    /* height: 100vh; */
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(.4,0,.6,1) infinite;
+}
+
+@keyframes pulse{
+0% {
+        transform: scaleX(1);
+}
+50% {
+    transform: scale3d(1.05,1.05,1.05);
+}
+100% {
+    transform: scaleX(1);
+}
+}
