@@ -1,6 +1,6 @@
 import React from "react";
 import Nav from "../components/Nav";
-import User from "../components/User";
+import User from "./User";
 import Search from "../components/Search";
 import Options from "../components/Options";
 import NewFood from "../components/NewFood";
