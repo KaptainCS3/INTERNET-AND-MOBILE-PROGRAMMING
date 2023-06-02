@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import HeadText from "./HeadText";
 import Nav from "./Nav";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,9 +8,9 @@ const NotifyMe = () => {
   return (
     <section className="w-full h-[100vh] bg-[#5DBA63]">
       <Nav />
-      <Link to="/home">
+      <NavLink to="/home">
         <HeadText logValue="Notification" route="/home" />
-      </Link>
+      </NavLink>
       <div className="bg-[#F0F4FD] pt-8 pb-32 mt-16 px-4 rounded-t-3xl min-h-[100vh]">
         <div className="flex justify-end text-[#2D9CDB] mb-4">
           <button>Delete All</button>
