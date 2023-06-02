@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import HeadText from "./HeadText";
 import Nav from "./Nav";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,18 +16,24 @@ const UserProfile = () => {
   return (
     <div className="w-full h-[100vh] bg-[#5DBA63]">
       <div className="">
-        <Link to="/home">
+        <NavLink to="/home">
           <HeadText logValue="Profile" route="/home" />
-        </Link>
+        </NavLink>
         <Nav />
       </div>
       <section className="bg-[#F0F4FD] pt-8 pb-32 mt-16 px-4 rounded-t-3xl min-h-[100vh]">
         <div className="flex pb-4">
           <div className="w-16 h-16">
-            <img src="/assets/user_avarta.jpg" alt="user profile" className="rounded-full object-cover w-full h-full"/>
+            <img
+              src="/assets/user_avarta.jpg"
+              alt="user profile"
+              className="rounded-full object-cover w-full h-full"
+            />
           </div>
           <div className="ml-4">
-            <h1 className="text-2xl font-bold pb-[0.3rem]">Leonard Appelgryn</h1>
+            <h1 className="text-2xl font-bold pb-[0.3rem]">
+              Leonard Appelgryn
+            </h1>
             <h3 className="text-[0.9rem]">Stayuptodate237@gmail.com</h3>
           </div>
         </div>
