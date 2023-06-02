@@ -3,7 +3,7 @@ import ErrorMSG from "./ErrorMSG";
 import HeadText from "./HeadText";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
@@ -39,9 +39,9 @@ const SignUpForm = () => {
   });
   return (
     <section className="w-full h-[100vh] bg-[#5DBA63]">
-      <Link to="/login">
+      <NavLink to="/login">
       <HeadText logValue="Sign Up" route="/login" />
-      </Link>
+      </NavLink>
       <form
         className="bg-[#F0F4FD] pt-8 pb-32 mt-16 px-4 rounded-t-3xl"
         onSubmit={formik.handleSubmit}
@@ -134,9 +134,9 @@ const SignUpForm = () => {
         </div>
         <small className="flex justify-center pb-2">
           Already have account?{" "}
-          <Link className="text-[#2D9CDB] pl-[0.25rem]" to="/login">
+          <NavLink className="text-[#2D9CDB] pl-[0.25rem]" to="/login">
             Login here
-          </Link>
+          </NavLink>
         </small>
         <div className="flex justify-center items-center pb-8">
           <span className="w-[45%] border-t border-[#5DBA63]"></span>
