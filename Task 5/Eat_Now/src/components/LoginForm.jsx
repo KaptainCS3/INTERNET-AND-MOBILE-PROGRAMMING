@@ -2,7 +2,7 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import HeadText from "./HeadText";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import ErrorMSG from "./ErrorMSG";
@@ -27,9 +27,9 @@ const LoginForm = () => {
   });
   return (
     <section className="w-full h-[100vh] bg-[#5DBA63]">
-      <Link to="/onboarding">
+      <NavLink to="/onboarding">
       <HeadText logValue="Login" route="/onboarding" />
-      </Link>
+      </NavLink>
       <form
         className="bg-[#F0F4FD] pt-8 pb-32 mt-16 px-4 rounded-t-3xl"
         onSubmit={formik.handleSubmit}
@@ -78,7 +78,7 @@ const LoginForm = () => {
               </label>
             </div>
             <small>
-              <Link className="text-[#2D9CDB]" to="/reset password">Forgot Password?</Link>
+              <NavLink className="text-[#2D9CDB]" to="/reset password">Forgot Password?</NavLink>
             </small>
           </div>
         </div>
@@ -89,9 +89,9 @@ const LoginForm = () => {
         </div>
         <small className="flex justify-center pb-2">
           Don't have account?{" "}
-          <Link className="text-[#2D9CDB] pl-[0.25rem]" to="/sign up">
+          <NavLink className="text-[#2D9CDB] pl-[0.25rem]" to="/sign up">
             Sign up here
-          </Link>
+          </NavLink>
         </small>
         <div className="flex justify-center items-center pb-8">
           <span className="w-[45%] border-t border-[#5DBA63]"></span>
