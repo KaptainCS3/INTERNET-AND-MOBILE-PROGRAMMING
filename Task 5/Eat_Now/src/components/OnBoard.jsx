@@ -1,5 +1,4 @@
 import React from "react";
-
 const OnBoard = () => {
   return (
     <div className="w-full h-[100vh] flex justify-center flex-col items-center bg-[#9ADA9E]">
@@ -11,6 +10,7 @@ const OnBoard = () => {
         />
       </div>
       <h1 className="hero my-4 text-white">Eat Now</h1>
+      <p className="text-white">Loading....</p>
     </div>
   );
 };

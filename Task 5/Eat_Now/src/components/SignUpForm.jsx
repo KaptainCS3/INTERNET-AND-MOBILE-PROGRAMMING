@@ -1,14 +1,51 @@
 import React from "react";
+import ErrorMSG from "./ErrorMSG";
 import HeadText from "./HeadText";
-import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 const SignUpForm = () => {
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      contact: "",
+      password: "",
+      confirm_password: "",
+      acceptedTerms: false,
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email address").required("Required"),
+      contact: Yup.string()
+        .min(9, "Enter a valid phone number")
+        .max(11, "Invalid contact")
+        .required("Required"),
+      password: Yup.string()
+        .min(8, "password be 8 characters or more")
+        .required("Required"),
+      confirm_password: Yup.string()
+        .oneOf([Yup.ref("password"), null], "Passwords must match")
+        .required("Required"),
+      acceptedTerms: Yup.boolean()
+        .oneOf([true], "You must accept the terms and conditions.")
+        .required("Required"),
+    }),
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+      formik.resetForm();
+    },
+  });
   return (
     <section className="w-full h-[100vh] bg-[#5DBA63]">
+      <NavLink to="/login">
       <HeadText logValue="Sign Up" route="/login" />
-      <form className="bg-[#F0F4FD] pt-8 pb-32 mt-16 px-4 rounded-t-3xl">
+      </NavLink>
+      <form
+        className="bg-[#F0F4FD] pt-8 pb-32 mt-16 px-4 rounded-t-3xl"
+        onSubmit={formik.handleSubmit}
+      >
         <h1 className="hero pb-4">Welcome to Eat Now</h1>
         <div className="">
           <div className="flex flex-col">
@@ -18,10 +55,13 @@ const SignUpForm = () => {
             <input
               placeholder="eg: myemail@example.com"
               type="email"
-              name="email"
+              {...formik.getFieldProps("email")}
               id="email"
-              className="py-[0.25rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
+              className="py-[0.6rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
             />
+            {formik.touched.email && formik.errors.email ? (
+              <ErrorMSG error_value={formik.errors.email} />
+            ) : null}
           </div>
           <div className="flex flex-col">
             <label htmlFor="contact" className="py-2 cursor-pointer">
@@ -30,10 +70,13 @@ const SignUpForm = () => {
             <input
               placeholder="eg: 2368939xxxx"
               type="text"
-              name="contact"
+              {...formik.getFieldProps("contact")}
               id="contact"
-              className="py-[0.25rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
+              className="py-[0.6rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
             />
+            {formik.touched.contact && formik.errors.contact ? (
+              <ErrorMSG error_value={formik.errors.contact} />
+            ) : null}
           </div>
           <div className="flex flex-col">
             <label htmlFor="password" className="py-2 cursor-pointer">
@@ -42,10 +85,13 @@ const SignUpForm = () => {
             <input
               placeholder="Input your password"
               type="password"
-              name="password"
+              {...formik.getFieldProps("password")}
               id="password"
-              className="py-[0.25rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
+              className="py-[0.6rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
             />
+            {formik.touched.password && formik.errors.password ? (
+              <ErrorMSG error_value={formik.errors.password} />
+            ) : null}
           </div>
           <div className="flex flex-col">
             <label htmlFor="re-password" className="py-2 cursor-pointer">
@@ -54,22 +100,43 @@ const SignUpForm = () => {
             <input
               placeholder="Re-enter your password"
               type="password"
-              name="re-password"
+              {...formik.getFieldProps("confirm_password")}
               id="re-password"
-              className="py-[0.25rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
+              className="py-[0.6rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
             />
+            {formik.touched.confirm_password &&
+            formik.errors.confirm_password ? (
+              <ErrorMSG error_value={formik.errors.confirm_password} />
+            ) : null}
+          </div>
+          <div className="mt-4">
+            <input
+              type="checkbox"
+              {...formik.getFieldProps("acceptedTerms")}
+              id="checked"
+            />
+            <label htmlFor="checked" className="pl-2 cursor-pointer">
+              I accept the terms and conditions
+            </label>
+            {formik.touched.acceptedTerms &&
+            formik.errors.acceptedTerms ? (
+              <ErrorMSG error_value={formik.errors.acceptedTerms} />
+            ) : null}
           </div>
         </div>
         <div className="py-3">
-          <button className="w-full py-3 bg-[#5DBA63] text-white rounded-xl">
+          <button
+            onClick={formik.isSubmitting}
+            className="w-full py-3 bg-[#5DBA63] text-white rounded-xl"
+          >
             Login
           </button>
         </div>
         <small className="flex justify-center pb-2">
           Already have account?{" "}
-          <Link className="text-[#2D9CDB] pl-[0.25rem]" to="/login">
+          <NavLink className="text-[#2D9CDB] pl-[0.25rem]" to="/login">
             Login here
-          </Link>
+          </NavLink>
         </small>
         <div className="flex justify-center items-center pb-8">
           <span className="w-[45%] border-t border-[#5DBA63]"></span>

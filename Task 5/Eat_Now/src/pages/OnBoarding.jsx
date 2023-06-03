@@ -7,7 +7,7 @@ const OnBoarding = () => {
       <OnBoardMain
         img="/assets/Onboard.png"
         title="Save the World"
-        desc="You can save the world by buy the food through our merchant. By doing that, you help the world in reduce food waste"
+        desc="You can save the world by giving out the food stuff you no longer need. By doing that, you help the world in reduce food waste"
       />
     </div>
   );
