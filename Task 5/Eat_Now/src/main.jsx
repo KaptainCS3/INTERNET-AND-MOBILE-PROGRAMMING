@@ -14,15 +14,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="onboarding" element={<OnBoarding />} />
-        <Route path="login" element={<Login />} />
-        <Route path="sign up" element={<SignUp />} />
-        <Route path="home" element={<Home />} />
-        <Route path="reset password" element={<ResetPassword />} />
-        <Route path="nearby" element={<Nearby />} />
-        <Route path="notifications" element={<Notification />} />
-        <Route path="profile" element={<Profile />} />
+        <Route exact path="/" element={<App />} />
+        <Route exact path="onboarding" element={<OnBoarding />} />
+        <Route exact path="login" element={<Login />} />
+        <Route exact path="sign up" element={<SignUp />} />
+        <Route exact path="home" element={<Home />} />
+        <Route exact path="reset password" element={<ResetPassword />} />
+        <Route exact path="nearby" element={<Nearby />} />
+        <Route exact path="notifications" element={<Notification />} />
+        <Route exact path="profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
