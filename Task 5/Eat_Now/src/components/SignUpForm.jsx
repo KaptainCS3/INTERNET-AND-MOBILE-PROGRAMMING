@@ -10,17 +10,27 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 const SignUpForm = () => {
   const formik = useFormik({
     initialValues: {
+      userName: "",
       email: "",
       contact: "",
+      address: "",
       password: "",
       confirm_password: "",
       acceptedTerms: false,
     },
     validationSchema: Yup.object({
+      userName: Yup.string()
+        .min(3, "User name too short")
+        .max(10, "User name too long")
+        .required("Required"),
       email: Yup.string().email("Invalid email address").required("Required"),
       contact: Yup.string()
         .min(9, "Enter a valid phone number")
         .max(11, "Invalid contact")
+        .required("Required"),
+      address: Yup.string()
+        .min(4, "Enter a valid address")
+        .max(11, "Address too long")
         .required("Required"),
       password: Yup.string()
         .min(8, "password be 8 characters or more")
@@ -40,7 +50,7 @@ const SignUpForm = () => {
   return (
     <section className="w-full h-[100vh] bg-[#5DBA63]">
       <NavLink to="/login">
-      <HeadText logValue="Sign Up" route="/login" />
+        <HeadText logValue="Sign Up" route="/login" />
       </NavLink>
       <form
         className="bg-[#F0F4FD] pt-8 pb-32 mt-16 px-4 rounded-t-3xl"
@@ -48,6 +58,21 @@ const SignUpForm = () => {
       >
         <h1 className="hero pb-4">Welcome to Eat Now</h1>
         <div className="">
+          <div className="flex flex-col">
+            <label htmlFor="userName" className="py-2 cursor-pointer">
+              User name
+            </label>
+            <input
+              placeholder="user name"
+              type="text"
+              {...formik.getFieldProps("userName")}
+              id="userName"
+              className="py-[0.6rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
+            />
+            {formik.touched.userName && formik.errors.userName ? (
+              <ErrorMSG error_value={formik.errors.userName} />
+            ) : null}
+          </div>
           <div className="flex flex-col">
             <label htmlFor="email" className="py-2 cursor-pointer">
               Email
@@ -76,6 +101,21 @@ const SignUpForm = () => {
             />
             {formik.touched.contact && formik.errors.contact ? (
               <ErrorMSG error_value={formik.errors.contact} />
+            ) : null}
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="address" className="py-2 cursor-pointer">
+              Address
+            </label>
+            <input
+              placeholder="eg: Str:CA"
+              type="text"
+              {...formik.getFieldProps("address")}
+              id="address"
+              className="py-[0.6rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
+            />
+            {formik.touched.address && formik.errors.address ? (
+              <ErrorMSG error_value={formik.errors.address} />
             ) : null}
           </div>
           <div className="flex flex-col">
@@ -118,8 +158,7 @@ const SignUpForm = () => {
             <label htmlFor="checked" className="pl-2 cursor-pointer">
               I accept the terms and conditions
             </label>
-            {formik.touched.acceptedTerms &&
-            formik.errors.acceptedTerms ? (
+            {formik.touched.acceptedTerms && formik.errors.acceptedTerms ? (
               <ErrorMSG error_value={formik.errors.acceptedTerms} />
             ) : null}
           </div>
