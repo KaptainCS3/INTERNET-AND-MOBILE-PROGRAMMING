@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import HeadText from "./HeadText";
@@ -21,14 +22,19 @@ const LoginForm = () => {
         .required("Required"),
     }),
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
+      axios
+        .post("http://localhost:8081/login")
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
       formik.resetForm();
     },
   });
+
   return (
     <section className="w-full h-[100vh] bg-[#5DBA63]">
       <NavLink to="/onboarding">
-      <HeadText logValue="Login" route="/onboarding" />
+        <HeadText logValue="Login" route="/onboarding" />
       </NavLink>
       <form
         className="bg-[#F0F4FD] pt-8 pb-32 mt-16 px-4 rounded-t-3xl"
@@ -78,7 +84,9 @@ const LoginForm = () => {
               </label>
             </div>
             <small>
-              <NavLink className="text-[#2D9CDB]" to="/reset password">Forgot Password?</NavLink>
+              <NavLink className="text-[#2D9CDB]" to="/reset password">
+                Forgot Password?
+              </NavLink>
             </small>
           </div>
         </div>
@@ -89,7 +97,7 @@ const LoginForm = () => {
         </div>
         <small className="flex justify-center pb-2">
           Don't have account?{" "}
-          <NavLink className="text-[#2D9CDB] pl-[0.25rem]" to="/sign up">
+          <NavLink className="text-[#2D9CDB] pl-[0.25rem]" to="/register">
             Sign up here
           </NavLink>
         </small>
