@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -9,6 +9,16 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import ErrorMSG from "./ErrorMSG";
 
 const LoginForm = () => {
+  const [loginStatus, setLoginStatus] = useState("");
+  const url = "http://localhost:8080/api/login";
+  // axios.defaults.withCredentials = true;
+  // useEffect(() => {
+  //   axios.get(url).then((response) => {
+  //     if (response.data.loggedIn == true) {
+  //       setRole(response.data.user[0].role);
+  //     }
+  //   });
+  // }, []);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -21,12 +31,25 @@ const LoginForm = () => {
         .min(8, "password be 8 characters or more")
         .required("Required"),
     }),
-    onSubmit: (values) => {
-      // alert(JSON.stringify(values, null, 2));
+    onSubmit: ({ email, password }, { setSubmitting }) => {
+      alert(JSON.stringify(email, password, null, 2));
       axios
-        .post("http://localhost:8081/login")
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+        .post(url, {
+          email,
+          password,
+        })
+        .then((response) => {
+          console.log(response);
+          alert("Login successful!");
+          formik.resetForm();
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("Login failed. Please try again.");
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
       formik.resetForm();
     },
   });
@@ -91,8 +114,12 @@ const LoginForm = () => {
           </div>
         </div>
         <div className="py-3">
-          <button className="w-full py-3 bg-[#5DBA63] text-white rounded-xl">
-            Login
+          <button
+            type="submit"
+            disabled={formik.isSubmitting} // apply disabled attribute
+            className="w-full py-3 bg-[#5DBA63] text-white rounded-xl"
+          >
+            {formik.isSubmitting ? "Login..." : "Login"}
           </button>
         </div>
         <small className="flex justify-center pb-2">
