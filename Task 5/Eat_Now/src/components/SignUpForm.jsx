@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import ErrorMSG from "./ErrorMSG";
 import HeadText from "./HeadText";
 import { useFormik } from "formik";
@@ -10,25 +11,27 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 const SignUpForm = () => {
   const formik = useFormik({
     initialValues: {
-      userName: "",
+      name: "",
       email: "",
       contact: "",
-      address: "",
+      location: "",
       password: "",
       confirm_password: "",
       acceptedTerms: false,
+      receiver_type: "",
     },
     validationSchema: Yup.object({
-      userName: Yup.string()
+      receiver_type: Yup.string().required("Required"),
+      name: Yup.string()
         .min(3, "User name too short")
-        .max(10, "User name too long")
+        .max(20, "User name too long")
         .required("Required"),
       email: Yup.string().email("Invalid email address").required("Required"),
       contact: Yup.string()
         .min(9, "Enter a valid phone number")
         .max(11, "Invalid contact")
         .required("Required"),
-      address: Yup.string()
+      location: Yup.string()
         .min(4, "Enter a valid address")
         .max(11, "Address too long")
         .required("Required"),
@@ -42,9 +45,45 @@ const SignUpForm = () => {
         .oneOf([true], "You must accept the terms and conditions.")
         .required("Required"),
     }),
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: (
+      { name, password, contact, location, receiver_type, email },
+      { setSubmitting }
+    ) => {
+      alert(
+        JSON.stringify(
+          name,
+          password,
+          contact,
+          address,
+          receiver_type,
+          email,
+          null,
+          2
+        )
+      );
+      axios
+        .post("http://localhost:8080/api/signup", {
+          location,
+          contact,
+          email,
+          name,
+          password,
+          receiver_type,
+        })
+        .then((response) => {
+          console.log(response);
+          alert("Sign up successful!");
+          formik.resetForm();
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("Sign up failed. Please try again.");
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
       formik.resetForm();
+      formik.values.acceptedTerms = false;
     },
   });
   return (
@@ -59,18 +98,38 @@ const SignUpForm = () => {
         <h1 className="hero pb-4">Welcome to Eat Now</h1>
         <div className="">
           <div className="flex flex-col">
+            <label htmlFor="opt" className="py-2 cursor-pointer">
+              Select an option:
+            </label>
+            <select
+              id="opt"
+              {...formik.getFieldProps("receiver_type")}
+              className="py-[0.6rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
+            >
+              <option value="">-- choose user type --</option>
+              <option value="regular user">Regular User</option>
+              <option value="orphanage">Orphanage</option>
+              <option value="restaurant">Restaurant</option>
+              <option value="charity organization">Charity Organization</option>
+              <option value="Market sellers">Market Sellers</option>
+            </select>
+            {formik.touched.receiver_type && formik.errors.receiver_type ? (
+              <ErrorMSG error_value={formik.errors.receiver_type} />
+            ) : null}
+          </div>
+          <div className="flex flex-col">
             <label htmlFor="userName" className="py-2 cursor-pointer">
               User name
             </label>
             <input
               placeholder="user name"
               type="text"
-              {...formik.getFieldProps("userName")}
+              {...formik.getFieldProps("name")}
               id="userName"
               className="py-[0.6rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
             />
-            {formik.touched.userName && formik.errors.userName ? (
-              <ErrorMSG error_value={formik.errors.userName} />
+            {formik.touched.name && formik.errors.name ? (
+              <ErrorMSG error_value={formik.errors.name} />
             ) : null}
           </div>
           <div className="flex flex-col">
@@ -110,7 +169,7 @@ const SignUpForm = () => {
             <input
               placeholder="eg: Str:CA"
               type="text"
-              {...formik.getFieldProps("address")}
+              {...formik.getFieldProps("location")}
               id="address"
               className="py-[0.6rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
             />
@@ -165,10 +224,11 @@ const SignUpForm = () => {
         </div>
         <div className="py-3">
           <button
-            onClick={formik.isSubmitting}
+            type="submit"
+            disabled={formik.isSubmitting} // apply disabled attribute
             className="w-full py-3 bg-[#5DBA63] text-white rounded-xl"
           >
-            Login
+            {formik.isSubmitting ? "Submitting..." : "Submit"}
           </button>
         </div>
         <small className="flex justify-center pb-2">
