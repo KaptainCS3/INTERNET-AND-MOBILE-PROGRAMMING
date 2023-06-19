@@ -1,0 +1,12 @@
+ uuid: {
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    allowNull: false,
+    primaryKey: true,
+    validate: {
+      isUUID: 4,
+    },
+    set: function () {
+      this.setDataValue("uuid", uuidv4());
+    },
+  },
