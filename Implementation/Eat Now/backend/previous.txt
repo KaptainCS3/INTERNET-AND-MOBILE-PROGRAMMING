@@ -1,0 +1,85 @@
+const express = require("express");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+// const session = require("express-session");
+// const db = require("./app/models");
+const cors = require("cors");
+const signupRouter = require("./routes/signup");
+const loginRouter = require("./routes/login");
+// const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const app = express();
+const corsOptions = {
+  origin: "http://localhost:5173",
+  methods: ["POST", "GET"],
+  credential: true,
+  exposedHeaders: ["Access-Control-Allow-Origin"],
+};
+
+// const donors = db.food_donors;
+// const receivers = db.food_receivers;
+app.use(cors(corsOptions));
+
+// parse requests of content-type - application/json
+app.use(express.json());
+// parse requests of content-type - application/x-www-form-urlencoded and add the cookie-parser
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Create a SequelizeStore instance with the db.sequelize object
+// const sessionStore = new SequelizeStore({ db: db.sequelize });
+
+//initialize seesion
+// app.use(
+//   session({
+//     key: "userId",
+//     secret: "subscribe",
+//     resave: false,
+//     saveUninitialized: false,
+//     store: sessionStore,
+//     cookie: {
+//       expires: 60 * 60 * 24,
+//     },
+//   })
+// );
+
+// simple route
+app.get("/", (req, res) => {
+  res.json({
+    message: "Welcome to EatNow application.",
+  });
+});
+
+app.get("/api/receiver", (req, res) => {
+  res.json({
+    message: "Welcome to EatNow application receiver data: ",
+    receivers,
+  }); // return data as JSON
+});
+
+app.get("/api/donor", (req, res) => {
+  res.json({
+    message: "Welcome to EatNow application donor data: ",
+    donors,
+  }); // return data as JSON
+});
+
+// app.get("api/login", (req, res) => {
+//   if (req.session.user) {
+//     res.send({ loggedIn: true, user: req.session.user });
+//   } else {
+//     res.send({ loggedIn: false });
+//   }
+// });
+
+//set API route to frontend
+app.use(express.json());
+app.use("/api", signupRouter);
+app.use("/api", loginRouter);
+
+// Initialize the session store and start the server
+const PORT = process.env.PORT || 8080;
+sessionStore.sync().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
+  });
+});
