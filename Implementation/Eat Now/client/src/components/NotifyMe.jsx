@@ -9,7 +9,7 @@ const NotifyMe = () => {
     <section className="w-full h-[100vh] bg-[#5DBA63]">
       <Nav />
       <NavLink to="/dashboard">
-        <HeadText logValue="Notification" route="/home" />
+        <HeadText logValue="Notification" route="/dashboard" />
       </NavLink>
       <div className="bg-[#F0F4FD] pt-8 pb-32 mt-16 px-4 rounded-t-3xl min-h-[100vh]">
         <div className="flex justify-end text-[#2D9CDB] mb-4">
