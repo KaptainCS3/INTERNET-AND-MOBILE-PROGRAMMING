@@ -1,11 +1,13 @@
 import React from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import ErrorMSG from "./ErrorMSG";
 const AddStock = () => {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -41,6 +43,7 @@ const AddStock = () => {
         .then((response) => {
           console.log(response);
           alert("Product added successful!");
+          navigate("/dashboard");
           formik.resetForm();
         })
         .catch((error) => {
@@ -119,10 +122,10 @@ const AddStock = () => {
           </div>
           <div className="flex flex-col">
             <label htmlFor="address" className="py-2 cursor-pointer">
-              Description
+              Expiry Data
             </label>
             <input
-              placeholder="Product description"
+              // placeholder="Product description"
               type="datetime-local"
               {...formik.getFieldProps("expiry_date")}
               id="description"
