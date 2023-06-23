@@ -26,28 +26,28 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BLOB("long"),
       allowNull: false,
     },
-    foodDonorId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      references: {
-        model: sequelize.models.food_donors,
-        key: "id",
-      },
-    },
-    foodStockId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      references: {
-        model: sequelize.models.food_stocks,
-        key: "id",
-      },
-    },
-  });
-  UploadStock.belongsTo(sequelize.models.food_donors, {
-    foreignKey: "foodDonorId",
-  });
-  UploadStock.belongsTo(sequelize.models.food_stocks, {
-    foreignKey: "foodStockId",
+  //   foodDonorId: {
+  //     type: Sequelize.INTEGER,
+  //     allowNull: false,
+  //     references: {
+  //       model: sequelize.models.food_donors,
+  //       key: "id",
+  //     },
+  //   },
+  //   foodStockId: {
+  //     type: Sequelize.INTEGER,
+  //     allowNull: false,
+  //     references: {
+  //       model: sequelize.models.food_stocks,
+  //       key: "id",
+  //     },
+  //   },
+  // });
+  // UploadStock.belongsTo(sequelize.models.food_donors, {
+  //   foreignKey: "foodDonorId",
+  // });
+  // UploadStock.belongsTo(sequelize.models.food_stocks, {
+  //   foreignKey: "foodStockId",
   });
 
   return UploadStock;
