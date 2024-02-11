@@ -5,6 +5,7 @@
   "main": "server.js",
   "author": "KaptainCS3",
   "scripts": {
+    "build": "yarn upgrade && yarn ",
     "start": "node server.js"
   },
   "license": "MIT",
