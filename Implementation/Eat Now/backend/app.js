@@ -1,61 +1,116 @@
 const express = require("express");
+require("dotenv").config();
+const db = require("./app/models");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const jwt = require("jsonwebtoken");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const cors = require("cors");
+const signupRouter = require("./routes/signup");
+const loginRouter = require("./routes/login");
+const addStock = require("./routes/addStock");
+const searchQuery = require("./routes/search");
+const uploadStock = require("./routes/upload");
+const allFood = require("./routes/foodData");
+const allDonors = require("./routes/donorData");
+const allReceivers = require("./routes/receiverData");
 const app = express();
-const port = process.env.PORT || 3001;
+const corsOptions = {
+  origin: "http://localhost:5173",
+  methods: ["POST", "GET"],
+  credential: true,
+  exposedHeaders: ["Access-Control-Allow-Origin"],
+};
 
-app.get("/", (req, res) => res.type('html').send(html));
+app.use(cors(corsOptions));
 
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+// Create a SequelizeStore instance with the db.sequelize object
+const sessionStore = new SequelizeStore({ db: db.sequelize });
 
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
+// parse requests of content-type - application/json
+app.use(express.json());
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const html = `
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello from Render!</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script>
-      setTimeout(() => {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-          disableForReducedMotion: true
-        });
-      }, 500);
-    </script>
-    <style>
-      @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
-      @font-face {
-        font-family: "neo-sans";
-        src: url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
-        font-style: normal;
-        font-weight: 700;
+//! config middleware
+app.use(
+  session({
+    store: sessionStore,
+    key: "userId",
+    secret: "subscribe",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      expires: 60 * 60 * 24,
+    },
+  })
+);
+
+// Sync the session store with the database
+sessionStore.sync();
+
+const verifyJWT = (req, res, next) => {
+  const token = req.headers["x-access-token"];
+  if (!token) {
+    res.send("We need a token, please give it to us next time");
+  } else {
+    jwt.verify(token, "jwtSecret", (err, decoded) => {
+      if (err) {
+        console.log(err);
+        console.log(
+          res.json({ auth: false, message: "you are failed to authenticate" })
+        );
+      } else {
+        req.userId = decoded.id;
+        next();
       }
-      html {
-        font-family: neo-sans;
-        font-weight: 700;
-        font-size: calc(62rem / 16);
-      }
-      body {
-        background: white;
-      }
-      section {
-        border-radius: 1em;
-        padding: 1em;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%);
-      }
-    </style>
-  </head>
-  <body>
-    <section>
-      Hello from Render!
-    </section>
-  </body>
-</html>
-`
+    });
+  }
+};
+
+app.get("/Auth", verifyJWT, (req, res) => {
+  res.send("You are authenticated Congrats:");
+});
+
+app.get("/login", verifyJWT, (req, res) => {
+  if (req.session.user) {
+    res.send({ loggedIn: true, user: req.session.user });
+  } else {
+    res.send({ loggedIn: false });
+  }
+});
+
+//set API endpoint route to frontend
+app.use(express.json());
+
+//! middleware signup
+app.use("/api", signupRouter);
+
+//! middleware login
+
+app.use("/api", loginRouter);
+
+//! middleware addStock
+app.use("/api", addStock);
+
+//! middleware search product
+app.use("/api", searchQuery);
+
+//! middleware upload product
+app.use("/api", uploadStock);
+
+//! middleware return Food_Donor object
+app.use("/api", allDonors);
+
+//! middleware return Food_Receiver object
+app.use("/api", allReceivers);
+
+//! middleware return all Food object
+app.use("/api", allFood);
+
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
