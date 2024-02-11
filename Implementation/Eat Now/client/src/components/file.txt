@@ -6,22 +6,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudArrowUp, faXmark } from "@fortawesome/free-solid-svg-icons";
 import ErrorMSG from "./ErrorMSG";
 const UploadFood = ({ isShown, setIsShown }) => {
-  // const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  // function handleFileInputChange(event) {
-  //   setSelectedFile(event.target.files[0]);
-  //   console.log(event.target.files);
-  //   // Do something with the selected file
-  // }
-  const url = "http://localhost:8080/api/upload";
+  function handleFileInputChange(event) {
+    setSelectedFile(event.target.files[0]);
+    console.log(event.target.files);
+    // Do something with the selected file
+  }
 
   const formik = useFormik({
     initialValues: {
       quantity: "",
       category_of_food: "",
       description: "",
-      picture: null,
-      // selectedFile,
+      foodStockId: "",
+      foodDonorId: "",
+      // picture: null,
+      selectedFile,
     },
     validationSchema: Yup.object().shape({
       name: Yup.string()
@@ -29,22 +30,29 @@ const UploadFood = ({ isShown, setIsShown }) => {
         .max(20, "User name too long")
         .required("Required"),
       quantity: Yup.number().required("Required"),
+      foodStockId: Yup.number().required("Required"),
+      foodDonorId: Yup.number().required("Required"),
       description: Yup.string()
         .min(20, "description too short")
         .max(50, "description too long")
         .required("Required"),
-      picture: Yup.mixed()
-        .test(
-          "fileType",
-          "Invalid file type",
-          (value) => value && ["image/jpeg", "image/png"].includes(value.type)
-        )
-        .required("Required"),
+      // picture: Yup.mixed()
+      //   .test(
+      //     "fileType",
+      //     "Invalid file type",
+      //     (value) => value && ["image/jpeg", "image/png"].includes(value.type)
+      //   )
+      //   .required("Required"),
     }),
-
-    //! formik submit handler
     onSubmit: (
-      { name, quantity, category_of_food, description, picture },
+      {
+        name,
+        quantity,
+        category_of_food,
+        description,
+        foodDonorId,
+        foodStockId,
+      },
       { setSubmitting }
     ) => {
       try {
@@ -53,19 +61,22 @@ const UploadFood = ({ isShown, setIsShown }) => {
         formData.append("quantity", quantity);
         formData.append("category_of_food", category_of_food);
         formData.append("description", description);
-        formData.append("picture", picture);
-        // if (selectedFile) {
-        //   formData.append("picture", selectedFile);
-        // }
-
-        //! making a post request to the api endpoint
-        const response = axios.post(url, formData, {
-          //! include this header when dealing with file upload
-          headers: { "content-type": "multipart/form-data" },
-        });
+        formData.append("foodStockId", foodStockId);
+        formData.append("foodDonorId", foodDonorId);
+        // formData.append("picture", selectedFile);
+        if (selectedFile) {
+          formData.append("picture", selectedFile);
+        }
+        const response = axios.post(
+          "http://localhost:8080/api/upload",
+          formData,
+          {
+            headers: { "content-type": "multipart/form-data" },
+          }
+        );
         console.log(response);
         alert("Upload successful!");
-        formik.resetForm();
+        // formik.resetForm();
       } catch (error) {
         console.error(error);
         alert("Upload failed. Please try again.");
@@ -119,6 +130,36 @@ const UploadFood = ({ isShown, setIsShown }) => {
               ) : null}
             </div>
             <div className="flex flex-col">
+              <label htmlFor="qty" className="py-2 cursor-pointer">
+                Food Donor ID
+              </label>
+              <input
+                placeholder="foodDonorId"
+                type="number"
+                {...formik.getFieldProps("foodDonorId")}
+                id="qty"
+                className="py-[0.6rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
+              />
+              {formik.touched.foodDonorId && formik.errors.foodDonorId ? (
+                <ErrorMSG error_value={formik.errors.foodDonorId} />
+              ) : null}
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="qty" className="py-2 cursor-pointer">
+                Food Stock ID
+              </label>
+              <input
+                placeholder="foodStockId"
+                type="number"
+                {...formik.getFieldProps("foodStockId")}
+                id="qty"
+                className="py-[0.6rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
+              />
+              {formik.touched.foodStockId && formik.errors.foodStockId ? (
+                <ErrorMSG error_value={formik.errors.foodStockId} />
+              ) : null}
+            </div>
+            <div className="flex flex-col">
               <label htmlFor="fd_cat" className="py-2 cursor-pointer">
                 Food category
               </label>
@@ -165,11 +206,10 @@ const UploadFood = ({ isShown, setIsShown }) => {
                 name="picture"
                 type="file"
                 hidden
-                // onChange={handleFileInputChange}
-                // !event handle for file change input
-                onChange={(event) => {
-                  formik.setFieldValue("picture", event.target.files[0]);
-                }}
+                onChange={handleFileInputChange}
+                // onChange={(event) => {
+                //   formik.setFieldValue("picture", event.target.files[0]);
+                // }}
                 id="pic"
                 className="py-[0.6rem] px-4 border outline-none border-[#5DBA63] rounded-xl"
               />
@@ -185,19 +225,19 @@ const UploadFood = ({ isShown, setIsShown }) => {
                 >
                   Browse Image to Upload
                 </label>
-                {formik.values.picture && (
-                  <small className="">{formik.values.picture.name}</small>
-                )}
+                {/* {formik.values.picture && (
+                   <small>{formik.values.picture.name}</small>
+                // )} */}
               </div>
             </div>
-            {formik.touched.picture && formik.errors.picture ? (
+            {/* {formik.touched.picture && formik.errors.picture ? (
               <ErrorMSG error_value={formik.errors.picture} />
-            ) : null}
+           ) : null} */}
           </div>
           <div className="py-3 mt-8">
             <button
               type="submit"
-              disabled={formik.isSubmitting} //! apply disabled attribute
+              // disabled={formik.isSubmitting} // apply disabled attribute
               className="w-full py-3 bg-[#5DBA63] text-white rounded-xl"
             >
               {formik.isSubmitting ? "Submitting..." : "Submit"}
@@ -210,3 +250,83 @@ const UploadFood = ({ isShown, setIsShown }) => {
 };
 
 export default UploadFood;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const express = require("express");
+const db = require("../app/models");
+const multer = require("multer");
+const router = express.Router();
+const path = require("path");
+const fs = require("fs");
+const UploadFood = db.upload_stocks;
+
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, "../client/public/assets/uploads");
+  },
+  filename: (req, file, callback) => {
+    console.log(file);
+    let arr = file.originalname.split(".");
+    if (
+      !fs.existsSync(
+        path.join("../client/public/assets/uploads", file.originalname)
+      )
+    ) {
+      return callback(null, file.originalname);
+    } else {
+      for (;;) {
+        arr[0] = `${arr[0]}(1)`;
+        if (
+          fs.existsSync(
+            path.join("../client/public/assets/uploads", `${arr[0]}.${arr[1]}`)
+          )
+        ) {
+          continue;
+        } else {
+          return callback(null, `${arr[0]}.${arr[1]}`);
+        }
+      }
+    }
+  },
+});
+
+const uploadFile = multer({ storage: storage });
+
+router.post("/upload", uploadFile.single("picture"), async (req, res) => {
+  console.log(req.body);
+  try {
+    const { name, quantity, category_of_food, description, foodDonorId, foodStockId } = req.body;
+    const upload = await UploadFood.create({
+      name: name,
+      quantity: quantity,
+      category_of_food: category_of_food,
+      description: description,
+      picture: req.file.path,
+      foodDonorId: foodDonorId,
+      foodStockId: foodStockId,
+    });
+    res.status(200).send({ message: "file uploaded successfully.", upload });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Failed to upload file.", upload });
+  }
+});
+
+module.exports = router;

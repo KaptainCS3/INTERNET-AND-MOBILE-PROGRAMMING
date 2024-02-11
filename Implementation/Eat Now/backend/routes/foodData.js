@@ -1,12 +1,23 @@
 const express = require("express");
-const db = require("../app/models");
+const { createClient } = require("@supabase/supabase-js");
 const router = express.Router();
-const allFood = db.food_stocks;
+
+// Configure your Supabase client
+const supabaseUrl = process.env.VITE_PROJECT_URL;
+const supabaseKey = process.env.VITE_SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 router.get("/allStocks", async (req, res, next) => {
   try {
-    const products = await allFood.findAll();
-    res.json({ products });
+    // Fetch data from the "food_stocks" table
+    const { data, error } = await supabase.from("food_stocks").select();
+
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Failed to retrieve products" });
+    }
+
+    res.json({ products: data });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to retrieve products" });

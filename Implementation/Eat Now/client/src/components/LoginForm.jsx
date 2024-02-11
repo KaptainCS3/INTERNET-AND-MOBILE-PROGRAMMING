@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -8,10 +8,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import ErrorMSG from "./ErrorMSG";
 import SuccessLogin from "./SuccessLogin";
-
+import { UserContext } from "../hooks/UserContext";
 const LoginForm = () => {
-  const [user, setUser] = useState([]);
   const navigate = useNavigate();
+  const {user, setUser} = useContext(UserContext);
   const [loginStatus, setLoginStatus] = useState(false);
   const url = "http://localhost:8080/api/login";
   useEffect(() => {
@@ -53,6 +53,7 @@ const LoginForm = () => {
           setLoginStatus(true);
           alert("Login successful!");
           console.log(response.data.user);
+          setUser(response.data);
           navigate("/dashboard");
           // formik.resetForm();
         })

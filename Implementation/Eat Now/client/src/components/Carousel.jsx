@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import FoodCard from "./FoodCard";
+// import FoodCard from "./FoodCard";
 import list from "../../list";
 import {
   faChevronLeft,
