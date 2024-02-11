@@ -7,7 +7,7 @@ const supabaseUrl = process.env.VITE_PROJECT_URL;
 const supabaseKey = process.env.VITE_SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-router.get("/allStocks", async (req, res, next) => {
+router.get("/all-stocks", async (req, res, next) => {
   try {
     // Fetch data from the "food_stocks" table
     const { data, error } = await supabase.from("food_stocks").select();

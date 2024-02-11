@@ -7,7 +7,7 @@ const supabaseUrl = process.env.VITE_PROJECT_URL;
 const supabaseKey = process.env.VITE_SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-router.post("/addstocks", async (req, res) => {
+router.post("/add-stocks", async (req, res) => {
   const { name, quantity, category_of_food, expiry_date, foodDonorId } =
     req.body;
   try {
