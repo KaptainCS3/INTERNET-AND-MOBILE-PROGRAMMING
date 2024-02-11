@@ -1,12 +1,10 @@
-
 module.exports = (sequelize, Sequelize) => {
-  const FoodDonors = sequelize.define("food_donors",
-  {
+  const FoodDonors = sequelize.define("food_donors", {
     id: {
       allowNull: false,
-      autoIncrement: true,
-      type: Sequelize.INTEGER,
+      defaultValue: Sequelize.fn("uuid_generate_v4"),
       primaryKey: true,
+      type: Sequelize.UUID,
     },
     name: {
       type: Sequelize.STRING,
@@ -32,8 +30,17 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    // createdAt: new Date(),
-    // updatedAt: new Date(),
+    createdAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+    },
+    updatedAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+    },
   });
+
   return FoodDonors;
 };

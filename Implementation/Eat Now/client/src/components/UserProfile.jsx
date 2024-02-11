@@ -12,7 +12,7 @@ import {
   faUser,
   faWallet,
 } from "@fortawesome/free-solid-svg-icons";
-const UserProfile = () => {
+const UserProfile = ({name, email}) => {
   return (
     <div className="w-full h-[100vh] bg-[#5DBA63]">
       <div className="">
@@ -32,9 +32,9 @@ const UserProfile = () => {
           </div>
           <div className="ml-4">
             <h1 className="text-2xl font-bold pb-[0.3rem]">
-              Leonard Appelgryn
+              {name}
             </h1>
-            <h3 className="text-[0.9rem]">Stayuptodate237@gmail.com</h3>
+            <h3 className="text-[0.9rem]">{email}</h3>
           </div>
         </div>
         <div className="border-t-2 border-[#5DBA63] pt-3">

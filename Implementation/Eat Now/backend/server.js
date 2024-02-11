@@ -1,7 +1,7 @@
 const express = require("express");
+require("dotenv").config();
 const db = require("./app/models");
 const bodyParser = require("body-parser");
-const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const jwt = require("jsonwebtoken");
@@ -16,7 +16,6 @@ const allFood = require("./routes/foodData");
 const allDonors = require("./routes/donorData");
 const allReceivers = require("./routes/receiverData");
 const app = express();
-app.use(fileUpload());
 const corsOptions = {
   origin: "http://localhost:5173",
   methods: ["POST", "GET"],
