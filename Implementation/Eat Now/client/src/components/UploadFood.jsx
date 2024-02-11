@@ -13,7 +13,7 @@ const UploadFood = ({ isShown, setIsShown }) => {
   //   console.log(event.target.files);
   //   // Do something with the selected file
   // }
-  const url = "http://localhost:8080/api/upload";
+  const url = `${process.env.VITE_BASE_URL}/upload`;
 
   const formik = useFormik({
     initialValues: {
