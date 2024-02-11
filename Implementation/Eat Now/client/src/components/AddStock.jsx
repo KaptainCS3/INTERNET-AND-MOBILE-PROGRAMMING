@@ -32,7 +32,7 @@ const AddStock = () => {
         JSON.stringify(name, quantity, category_of_food, expiry_date, null, 2)
       );
       axios
-        .post("http://localhost:8080/api/addstocks", {
+        .post(`${process.env.VITE_BASE_URL}/add-stocks`, {
           name,
           quantity,
           category_of_food,

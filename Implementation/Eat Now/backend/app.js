@@ -82,7 +82,6 @@ app.get("/login", verifyJWT, (req, res) => {
   }
 });
 
-
 //set API endpoint route to frontend
 app.use(express.json());
 

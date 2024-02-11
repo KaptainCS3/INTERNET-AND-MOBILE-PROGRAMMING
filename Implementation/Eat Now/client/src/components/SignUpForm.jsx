@@ -63,7 +63,7 @@ const SignUpForm = () => {
         )
       );
       axios
-        .post("http://localhost:8080/api/signup", {
+        .post(`${process.env.VITE_BASE_URL}/signup`, {
           location,
           contact,
           email,

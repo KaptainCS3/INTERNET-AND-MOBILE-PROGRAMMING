@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import FoodCard from "./FoodCard";
 import axios from "axios";
 const NewFood = ({ title }) => {
-  const foodList = "http://localhost:8080/api/allStocks";
+  const foodList = `${process.env.VITE_BASE_URL}/all-stocks`;
   const [width, setWidth] = useState(0);
   const [list, setList] = useState([]);
   const carousel = useRef();

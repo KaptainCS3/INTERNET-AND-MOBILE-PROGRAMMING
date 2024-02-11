@@ -13,9 +13,9 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const {user, setUser} = useContext(UserContext);
   const [loginStatus, setLoginStatus] = useState(false);
-  const url = "http://localhost:8080/api/login";
+  const url = `${process.env.VITE_BASE_URL}/login`
   useEffect(() => {
-    axios.get("http://localhost:8080/login").then((response) => {
+    axios.get(url).then((response) => {
       if (response.data.loggedIn === true) {
         setRole(response.data.user[0].role);
         console.log(response);
@@ -71,7 +71,7 @@ const LoginForm = () => {
 
   const userAuthenticated = () => {
     axios
-      .get("http://localhost:8080/Auth", {
+      .get(`${process.env.VITE_BASE_URL}/Auth`, {
         headers: {
           "x-access-token": localStorage.getItem("token"),
         },
