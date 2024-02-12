@@ -13,7 +13,7 @@ const UploadFood = ({ isShown, setIsShown }) => {
   //   console.log(event.target.files);
   //   // Do something with the selected file
   // }
-  const url = `${process.env.VITE_BASE_URL}/upload`;
+  const url = `${import.meta.env.VITE_BASE_URL}/upload`;
 
   const formik = useFormik({
     initialValues: {

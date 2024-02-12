@@ -22,7 +22,7 @@ const Search = () => {
       alert(JSON.stringify(name, null, 2));
       // formik.resetForm();
       axios
-        .post(`${process.env.VITE_BASE_URL}/search`, {
+        .post(`${import.meta.env.VITE_BASE_URL}/search`, {
           name,
           credentials: "include",
         })
