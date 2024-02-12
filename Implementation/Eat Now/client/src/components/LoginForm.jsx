@@ -13,7 +13,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const {user, setUser} = useContext(UserContext);
   const [loginStatus, setLoginStatus] = useState(false);
-  const url = `${process.env.VITE_BASE_URL}/login`
+  const url = `${import.meta.env.VITE_BASE_URL}/login`;
   useEffect(() => {
     axios.get(url).then((response) => {
       if (response.data.loggedIn === true) {
@@ -71,7 +71,7 @@ const LoginForm = () => {
 
   const userAuthenticated = () => {
     axios
-      .get(`${process.env.VITE_BASE_URL}/Auth`, {
+      .get(`${url}/Auth`, {
         headers: {
           "x-access-token": localStorage.getItem("token"),
         },
