@@ -63,7 +63,7 @@ const SignUpForm = () => {
         )
       );
       axios
-        .post(`${process.env.VITE_BASE_URL}/signup`, {
+        .post(`${import.meta.env.VITE_BASE_URL}/signup`, {
           location,
           contact,
           email,
