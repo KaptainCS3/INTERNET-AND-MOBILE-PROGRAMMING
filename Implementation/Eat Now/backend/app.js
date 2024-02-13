@@ -17,7 +17,10 @@ const allDonors = require("./routes/donorData");
 const allReceivers = require("./routes/receiverData");
 const app = express();
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: [
+    "http://localhost:5173",
+    "https://internet-and-mobile-programming.vercel.app",
+  ],
   methods: ["POST", "GET"],
   credential: true,
   exposedHeaders: ["Access-Control-Allow-Origin"],
